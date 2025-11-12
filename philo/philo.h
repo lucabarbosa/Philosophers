@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 13:06:52 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/11 23:39:10 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/12 20:15:23 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,16 @@
 # include <stdio.h>
 # include <pthread.h>
 
+typedef struct s_rules
+{
+	int				n_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				n_philo_eat;
+}	t_rules;
+
+int	is_num(char *str);
+int	ft_atoi(const char *nptr);
 
 #endif

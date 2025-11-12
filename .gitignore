@@ -1,4 +1,5 @@
-/obj
+philo/obj
+philo/philo
 *.out
 *.exe
 *.a
