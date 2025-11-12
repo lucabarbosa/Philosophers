@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/12 20:17:06 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/12 20:31:11 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static void	init_struct(t_rules *limits, char **argv, int argc);
 
 int	main(int argc, char **argv)
 {
-	t_rules	limits;	
+	t_rules		limits;
+	pthread_t	philos;
 
 	if (argc == 1)
 		return (0);
@@ -41,6 +42,8 @@ static void	init_struct(t_rules *limits, char **argv, int argc)
 		i++;
 	}
 	limits->n_philos = ft_atoi(argv[1]);
+	if (limits->n_philos > 200)
+		argument_error(2);
 	limits->time_to_die = ft_atoi(argv[2]);
 	limits->time_to_eat = ft_atoi(argv[3]);
 	limits->time_to_sleep = ft_atoi(argv[4]);
@@ -53,9 +56,11 @@ static void	init_struct(t_rules *limits, char **argv, int argc)
 static void	argument_error(int each)
 {
 	if (each == 0)
-		printf("Wrong number of arguments!");
+		printf("Error: Wrong number of arguments!");
 	else if (each == 1)
-		printf("The arguments must be positive integers!");
+		printf("Error: The arguments must be positive integers!");
+	else if (each == 2)
+		printf("Error: Too many philosophers, the number must be below 200.");
 	exit (1);
 }
 
