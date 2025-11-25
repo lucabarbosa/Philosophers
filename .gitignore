@@ -5,3 +5,4 @@ philo/philo
 *.a
 .vscode
 test.txt
+.philo_notes

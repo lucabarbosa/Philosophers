@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/13 12:34:01 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/25 11:23:42 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@ int	main(int argc, char **argv)
 	if (argc == 5 || argc == 6)
 	{
 		init_struct(&limits, argv, argc);
-		printf("%i\n", limits.n_philos);
-		printf("%i\n", limits.time_to_die);
-		printf("%i\n", limits.time_to_eat);
-		printf("%i\n", limits.time_to_sleep);
-		printf("%i\n", limits.n_philo_eat);
 	}
 	else
 		argument_error(0);
@@ -37,7 +32,7 @@ int	main(int argc, char **argv)
 static void	init_struct(t_rules *limits, char **argv, int argc)
 {
 	int i;
-	
+
 	i = 0;
 	while (i++ < argc - 1)
 		if (is_num(argv[i]) == 0)
@@ -84,3 +79,42 @@ static void	argument_error(int each)
 
 
 // ./philo_bonus 5 800 200 200 7 // valgrind --tool=helgrind ./philo 2 400 200 200
+
+
+	// #include <stdio.h>
+	// #include <pthread.h>
+
+	// void* minha_thread(void* arg)
+	// {
+ 	//   int *id;
+	//   id = (int *)arg;
+ 	//   printf("Olá! Eu sou a thread %i\n", *id);
+ 	//   return NULL;
+	// }
+
+	// int main()
+	// {
+	// 	pthread_t t1;
+	// 	pthread_t t2;
+	// 	pthread_attr_t attr;
+	// 	int id1 = 1;
+	// 	int id2 = 2;
+	// 	int ret;
+
+	// pthread_attr_init(&attr);
+	// ret = pthread_attr_setscope(&attr, PTHREAD_SCOPE_PROCESS);
+	// if (!ret)
+	// 	printf("Erro ao setar o thread");
+	
+	// 	// Criando as threads
+	// 	pthread_create(&t1, &attr, minha_thread, &id1); // <-------
+	// 	pthread_create(&t2, &attr, minha_thread, &id2);
+
+	// 	// Esperando elas terminarem
+	// 	pthread_join(t1, NULL);
+	// 	pthread_join(t2, NULL);
+	// 	pthread_attr_destroy(&attr);
+
+	// 	printf("Threads finalizadas.\n");
+	// 	return 0;
+	// }

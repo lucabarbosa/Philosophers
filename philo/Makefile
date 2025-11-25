@@ -1,6 +1,6 @@
 NAME	=	philo
 
-CC		=	@cc
+CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror
 OBJ		=	$(patsubst %.c, obj/%.o, $(SRC))
 SRC		=	main.c philo_utils.c
