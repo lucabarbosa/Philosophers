@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 13:06:52 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/25 11:25:06 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/25 17:47:46 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,19 @@
 
 # define MAX_PHILOS 200
 
+typedef struct s_philo
+{
+	struct s_rules	*rules;
+
+	int				id_philo;
+	pthread_t		thread;
+	int				meals_eaten;
+	long			last_meal_time;
+
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+}	t_philo;
+
 typedef struct s_rules
 {
 	int				n_philos;
@@ -28,25 +41,20 @@ typedef struct s_rules
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				n_philo_eat;
+
+	long			start_time;
+	int				someone_died;
+
+	pthread_mutex_t	forks[MAX_PHILOS];
+	pthread_mutex_t	write_lock;
+	pthread_mutex_t	death_lock;
+
+	t_philo			philo[MAX_PHILOS];
 }	t_rules;
 
-typedef struct s_philo
-{
-    int				id_philo;
-    int				meals_eaten;
-    long			last_meal_time;
-    pthread_t		thread;
-
-    pthread_mutex_t	*left_fork;
-    pthread_mutex_t	*right_fork;
-
-    t_rules			*rules;
-    pthread_mutex_t	*write_lock;
-    pthread_mutex_t	*death_lock;
-    int				*someone_died;
-}	t_philo;
-
-int	is_num(char *str);
-int	ft_atoi(const char *nptr);
+long	get_time(void);
+int		is_num(char *str);
+void	argument_error(int each);
+int		ft_atoi(const char *nptr);
 
 #endif

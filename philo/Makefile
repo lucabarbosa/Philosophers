@@ -8,7 +8,7 @@ SRC		=	main.c philo_utils.c
 all:		obj $(NAME)
 
 $(NAME):	$(OBJ)
-			$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -pthread
 			@echo "\033[1;32mPhilo Compiled!\033[0m"
 
 obj:

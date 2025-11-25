@@ -6,13 +6,14 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/25 11:23:42 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/25 17:47:40 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	argument_error(int each);
+static void	init_philos(t_rules *limits);
+static int	init_mutexes(t_rules *limits);
 static void	init_struct(t_rules *limits, char **argv, int argc);
 
 int	main(int argc, char **argv)
@@ -24,6 +25,12 @@ int	main(int argc, char **argv)
 	if (argc == 5 || argc == 6)
 	{
 		init_struct(&limits, argv, argc);
+		if (init_mutexes(&limits))
+			argument_error(7);
+		init_philos(&limits);
+		limits.start_time = get_time();
+		if (limits.start_time == -1)
+			argument_error(8);
 	}
 	else
 		argument_error(0);
@@ -31,7 +38,7 @@ int	main(int argc, char **argv)
 
 static void	init_struct(t_rules *limits, char **argv, int argc)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i++ < argc - 1)
@@ -49,72 +56,58 @@ static void	init_struct(t_rules *limits, char **argv, int argc)
 	limits->time_to_sleep = ft_atoi(argv[4]);
 	if (limits->time_to_sleep < 1)
 		argument_error(5);
+	limits->someone_died = 0;
 	limits->n_philo_eat = 0;
 	if (argc == 5)
 		return ;
 	limits->n_philo_eat = ft_atoi(argv[5]);
-	if (limits->time_to_sleep < 1)
+	if (limits->n_philo_eat < 1)
 		argument_error(6);
 }
 
-static void	argument_error(int each)
+static int	init_mutexes(t_rules *limits)
 {
-	if (each == 0)
-		printf("Error: Wrong number of arguments.\n");
-	else if (each == 1)
-		printf("Error: The arguments must be positive integers.\n");
-	else if (each == 2)
-		printf("Error: The num of philos must be more than 1 and below 200.\n");
-	else if (each == 3)
-		printf("Error: Time_to_die must be at least 1.\n");
-	else if (each == 4)
-		printf("Error: Time_to_eat must be at least 1.\n");
-	else if (each == 5)
-		printf("Error: Time_to_sleep must be at least 1.\n");
-	else if (each == 6)
-		printf("Error: Number_of_times_each_philosopher_must_eat \
-			must be at least 1.\n");
-	exit (1);
+	int	i;
+	int	return_mut;
+
+	i = 0;
+	while (i < limits->n_philos)
+	{
+		return_mut = pthread_mutex_init(&limits->forks[i], NULL);
+		if (return_mut)
+			return (1);
+		i++;
+	}
+	return_mut = pthread_mutex_init(&limits->write_lock, NULL);
+	if (return_mut)
+		return (1);
+	return_mut = pthread_mutex_init(&limits->death_lock, NULL);
+	if (return_mut)
+		return (1);
+	return (0);
 }
 
+static void	init_philos(t_rules *limit)
+{
+	int	i;
 
-// ./philo_bonus 5 800 200 200 7 // valgrind --tool=helgrind ./philo 2 400 200 200
+	i = 0;
+	while (i < limit->n_philos)
+	{
+		limit->philo[i].id_philo = i + 1;
+		limit->philo[i].meals_eaten = 0;
+		limit->philo[i].last_meal_time = 0;
+		limit->philo[i].left_fork = &limit->forks[i];
+		limit->philo[i].right_fork = &limit->forks[(i + 1) % limit->n_philos];
+		limit->philo[i].rules = limit;
+		i++;
+	}
+}
 
+// int				id_philo;
+// 	pthread_t		thread;
+// 	int				meals_eaten;
+// 	long			last_meal_time;
 
-	// #include <stdio.h>
-	// #include <pthread.h>
-
-	// void* minha_thread(void* arg)
-	// {
- 	//   int *id;
-	//   id = (int *)arg;
- 	//   printf("Olá! Eu sou a thread %i\n", *id);
- 	//   return NULL;
-	// }
-
-	// int main()
-	// {
-	// 	pthread_t t1;
-	// 	pthread_t t2;
-	// 	pthread_attr_t attr;
-	// 	int id1 = 1;
-	// 	int id2 = 2;
-	// 	int ret;
-
-	// pthread_attr_init(&attr);
-	// ret = pthread_attr_setscope(&attr, PTHREAD_SCOPE_PROCESS);
-	// if (!ret)
-	// 	printf("Erro ao setar o thread");
-	
-	// 	// Criando as threads
-	// 	pthread_create(&t1, &attr, minha_thread, &id1); // <-------
-	// 	pthread_create(&t2, &attr, minha_thread, &id2);
-
-	// 	// Esperando elas terminarem
-	// 	pthread_join(t1, NULL);
-	// 	pthread_join(t2, NULL);
-	// 	pthread_attr_destroy(&attr);
-
-	// 	printf("Threads finalizadas.\n");
-	// 	return 0;
-	// }
+// 	pthread_mutex_t	*left_fork;
+// 	pthread_mutex_t	*right_fork;
