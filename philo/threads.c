@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:47:41 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/27 16:32:21 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/27 18:19:55 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	create_threads(t_rules *data)
 	i = 0;
 	while (i < data->n_philos)
 	{
-	r = pthread_create(data->philo[i].thread, NULL, &routine, &data->philo[i]);
+	r = pthread_create(&data->philo[i].thread, NULL, &routine, &data->philo[i]);
 		if (r != 0)
 			return (1);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/27 17:02:04 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/27 18:15:27 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int	init_mutexes(t_rules *limits)
 	if (return_mut)
 		return (1);
 	return (0);
-}void	ft_take_a_fork(t_philo philo)
+}
 
 static void	init_philos(t_rules *limit)
 {

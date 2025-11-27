@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 13:06:52 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/27 16:32:26 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/27 18:20:36 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_rules
 
 long	get_time(void);
 int		is_num(char *str);
-void	routine(void *arg);
+void	*routine(void *arg);
 void	argument_error(int each);
 int		ft_atoi(const char *nptr);
 void	ft_sleep(long milliseconds);
