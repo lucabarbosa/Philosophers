@@ -6,31 +6,33 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/25 17:47:40 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/27 17:02:04 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	init_philos(t_rules *limits);
-static int	init_mutexes(t_rules *limits);
-static void	init_struct(t_rules *limits, char **argv, int argc);
+static void	init_philos(t_rules *data);
+static int	init_mutexes(t_rules *data);
+static void	init_struct(t_rules *data, char **argv, int argc);
 
 int	main(int argc, char **argv)
 {
-	t_rules		limits;
+	t_rules		data;
 
 	if (argc == 1)
 		return (0);
 	if (argc == 5 || argc == 6)
 	{
-		init_struct(&limits, argv, argc);
-		if (init_mutexes(&limits))
+		init_struct(&data, argv, argc);
+		if (init_mutexes(&data))
 			argument_error(7);
-		init_philos(&limits);
-		limits.start_time = get_time();
-		if (limits.start_time == -1)
+		init_philos(&data);
+		data.start_time = get_time();
+		if (data.start_time == -1)
 			argument_error(8);
+		if (create_threads(&data))
+			destroy_mutex(&data);
 	}
 	else
 		argument_error(0);
@@ -85,7 +87,7 @@ static int	init_mutexes(t_rules *limits)
 	if (return_mut)
 		return (1);
 	return (0);
-}
+}void	ft_take_a_fork(t_philo philo)
 
 static void	init_philos(t_rules *limit)
 {
@@ -103,11 +105,3 @@ static void	init_philos(t_rules *limit)
 		i++;
 	}
 }
-
-// int				id_philo;
-// 	pthread_t		thread;
-// 	int				meals_eaten;
-// 	long			last_meal_time;
-
-// 	pthread_mutex_t	*left_fork;
-// 	pthread_mutex_t	*right_fork;

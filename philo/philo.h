@@ -6,16 +6,16 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 13:06:52 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/25 17:47:46 by lbento           ###   ########.fr       */
+/*   Updated: 2025/11/27 16:32:26 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 # include <pthread.h>
 # include <sys/time.h>
 
@@ -54,7 +54,11 @@ typedef struct s_rules
 
 long	get_time(void);
 int		is_num(char *str);
+void	routine(void *arg);
 void	argument_error(int each);
 int		ft_atoi(const char *nptr);
+void	ft_sleep(long milliseconds);
+void	destroy_mutex(t_rules *data);
+int		create_threads(t_rules *data);
 
 #endif
