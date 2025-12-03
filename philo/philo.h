@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 13:06:52 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/27 18:20:36 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/02 21:22:04 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	argument_error(int each);
 int		ft_atoi(const char *nptr);
 void	ft_sleep(long milliseconds);
 void	destroy_mutex(t_rules *data);
-int		create_threads(t_rules *data);
+void	create_threads(t_rules *data);
+void	print_status(t_philo *data, char *message);
+void	join_thread(t_rules *data);
 
 #endif

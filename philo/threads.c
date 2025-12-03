@@ -6,29 +6,32 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:47:41 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/27 18:19:55 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/02 21:24:43 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 void	destroy_mutex(t_rules *data);
-int		create_threads(t_rules *data);
+void	create_threads(t_rules *data);
+void	print_status(t_philo *data, char *message);
 
-int	create_threads(t_rules *data)
+void	create_threads(t_rules *data)
 {
 	int	i;
-	int	r;
+	int	n;
 
 	i = 0;
 	while (i < data->n_philos)
 	{
-	r = pthread_create(&data->philo[i].thread, NULL, &routine, &data->philo[i]);
-		if (r != 0)
-			return (1);
+	n = pthread_create(&data->philo[i].thread, NULL, &routine, &data->philo[i]);
+		if (n != 0)
+		{
+			destroy_mutex(data);
+			exit (1);
+		}
 		i++;
 	}
-	return (0);
 }
 
 void	destroy_mutex(t_rules *data)
@@ -43,4 +46,34 @@ void	destroy_mutex(t_rules *data)
 	}
 	pthread_mutex_destroy(&data->write_lock);
 	pthread_mutex_destroy(&data->death_lock);
+}
+
+void	print_status(t_philo *data, char *message)
+{
+	long	time_philo;
+
+	pthread_mutex_lock(&data->rules->write_lock);
+	pthread_mutex_lock(&data->rules->death_lock);
+	if (data->rules->someone_died)
+	{
+		pthread_mutex_unlock(&data->rules->write_lock);
+		pthread_mutex_unlock(&data->rules->death_lock);
+		return ;
+	}
+	pthread_mutex_unlock(&data->rules->death_lock);
+	time_philo = get_time() - data->rules->start_time;
+	printf("%ld %i %s\n", time_philo, data->id_philo, message);
+	pthread_mutex_unlock(&data->rules->write_lock);
+}
+
+void	join_thread(t_rules *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->n_philos)
+	{
+		pthread_join(data->philo[i].thread, NULL);
+		i++;
+	}
 }

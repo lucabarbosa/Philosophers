@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:19:48 by lbento            #+#    #+#             */
-/*   Updated: 2025/11/27 16:13:13 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/02 18:28:29 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ long	get_time(void)
 
 void	ft_sleep(long milliseconds)
 {
-	// long	starting_time;
+	long	starting_time;
 
-	// starting_time = get_time();
-	// while ((get_time() - starting_time) < milliseconds)
-		usleep(1000 * milliseconds);
+	starting_time = get_time();
+	while ((get_time() - starting_time) < milliseconds)
+		usleep(100);
 }
 
 void	argument_error(int each)
