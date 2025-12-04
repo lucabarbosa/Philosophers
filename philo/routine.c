@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:25:45 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/02 21:23:31 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/03 21:15:03 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void	*routine(void *arg)
 static void	ft_take_a_fork(t_philo *data)
 {
 	pthread_mutex_lock(data->left_fork);
-	print_status(data, "\033[1;30m has taken a fork 🍴\033[0m");
+	print_status(data, "\033[1;37m has taken a fork 🍴\033[0m");
 	pthread_mutex_lock(data->right_fork);
-	print_status(data, "\033[1;30m has taken a fork 🍴\033[0m");
+	print_status(data, "\033[1;37m has taken a fork 🍴\033[0m");
 }
 
 static void	ft_eating(t_philo *data)

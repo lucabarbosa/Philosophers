@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 13:06:52 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/02 21:22:04 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/03 21:11:32 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_rules
 	pthread_mutex_t	forks[MAX_PHILOS];
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	death_lock;
+	pthread_t		monitor;
 
 	t_philo			philo[MAX_PHILOS];
 }	t_rules;
@@ -55,12 +56,13 @@ typedef struct s_rules
 long	get_time(void);
 int		is_num(char *str);
 void	*routine(void *arg);
+void	*only_one(void *arg);
 void	argument_error(int each);
 int		ft_atoi(const char *nptr);
+//void	*thread_monitor(void *arg);
 void	ft_sleep(long milliseconds);
-void	destroy_mutex(t_rules *data);
+void	destroy_mutex(t_rules *data, int flag);
 void	create_threads(t_rules *data);
 void	print_status(t_philo *data, char *message);
-void	join_thread(t_rules *data);
 
 #endif

@@ -6,13 +6,14 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/02 21:22:19 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/03 20:59:43 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static void	init_philos(t_rules *data);
+static void	join_thread(t_rules *data);
 static void	init_mutexes(t_rules *data);
 static void	init_struct(t_rules *data, char **argv, int argc);
 
@@ -31,6 +32,7 @@ int	main(int argc, char **argv)
 		if (data.start_time == -1)
 			argument_error(8);
 		create_threads(&data);
+	//	thread_monitor(&data);
 		join_thread(&data);
 	}
 	else
@@ -96,11 +98,23 @@ static void	init_philos(t_rules *limit)
 	{
 		limit->philo[i].id_philo = i + 1;
 		limit->philo[i].meals_eaten = 0;
-		limit->philo[i].last_meal_time = 0;
+		limit->philo[i].last_meal_time = limit->start_time;
 		limit->philo[i].left_fork = &limit->forks[i];
 		limit->philo[i].right_fork = &limit->forks[(i + 1) % limit->n_philos];
 		limit->philo[i].rules = limit;
 		i++;
 	}
 }
-//💀
+
+static void	join_thread(t_rules *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->n_philos)
+	{
+		pthread_join(data->philo[i].thread, NULL);
+		i++;
+	}
+	pthread_detach(data->monitor);
+}

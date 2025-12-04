@@ -6,35 +6,57 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:47:41 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/02 21:24:43 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/03 21:17:08 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	destroy_mutex(t_rules *data);
+void	*only_one(void *arg);
+void	destroy_mutex(t_rules *data, int flag);
 void	create_threads(t_rules *data);
 void	print_status(t_philo *data, char *message);
 
-void	create_threads(t_rules *data)
+void	*only_one(void *arg)
 {
-	int	i;
-	int	n;
+	t_philo	*data;
 
-	i = 0;
-	while (i < data->n_philos)
-	{
-	n = pthread_create(&data->philo[i].thread, NULL, &routine, &data->philo[i]);
-		if (n != 0)
-		{
-			destroy_mutex(data);
-			exit (1);
-		}
-		i++;
-	}
+	data = (t_philo *)arg;
+	pthread_mutex_lock(data->left_fork);
+	print_status(data, "\033[1;37m has taken a fork 🍴\033[0m");
+	ft_sleep(data->rules->time_to_eat);
+	print_status(data, "\033[1;33m died 💀\033[0m");
+	return (NULL);
 }
 
-void	destroy_mutex(t_rules *data)
+void	create_threads(t_rules *data)
+{
+	int			i;
+	int			n;
+
+	i = 0;
+	if (data->n_philos == 1)
+	{
+		pthread_create(&data->philo[i].thread,
+			NULL, &only_one, &data->philo[i]);
+		return ;
+	}
+	while (i < data->n_philos)
+	{
+		n = pthread_create(&data->philo[i].thread,
+				NULL, &routine, &data->philo[i]);
+		if (n != 0)
+			destroy_mutex(data, 1);
+		i++;
+	}
+	// n = pthread_create(&data->monitor, NULL, &thread_monitor, &data);
+	// if (n != 0)
+	// {
+	// 	destroy_mutex(data, 1);
+	// }
+}
+
+void	destroy_mutex(t_rules *data, int flag)
 {
 	int	i;
 
@@ -46,6 +68,8 @@ void	destroy_mutex(t_rules *data)
 	}
 	pthread_mutex_destroy(&data->write_lock);
 	pthread_mutex_destroy(&data->death_lock);
+	if (flag)
+		argument_error(9);
 }
 
 void	print_status(t_philo *data, char *message)
@@ -64,16 +88,4 @@ void	print_status(t_philo *data, char *message)
 	time_philo = get_time() - data->rules->start_time;
 	printf("%ld %i %s\n", time_philo, data->id_philo, message);
 	pthread_mutex_unlock(&data->rules->write_lock);
-}
-
-void	join_thread(t_rules *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->n_philos)
-	{
-		pthread_join(data->philo[i].thread, NULL);
-		i++;
-	}
 }
