@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/05 11:26:17 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/05 18:13:13 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int argc, char **argv)
 			argument_error(8);
 		create_threads(&data);
 		join_thread(&data);
+		destroy_mutex(&data, 0);
 	}
 	else
 		argument_error(0);
@@ -110,10 +111,15 @@ static void	join_thread(t_rules *data)
 	int	i;
 
 	i = 0;
+	if (data->n_philos == 1)
+	{
+		pthread_join(data->philo[0].thread, NULL);
+		return ;
+	}
+	pthread_join(data->monitor, NULL);
 	while (i < data->n_philos)
 	{
 		pthread_join(data->philo[i].thread, NULL);
 		i++;
 	}
-	pthread_detach(data->monitor);
 }
