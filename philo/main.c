@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/03 20:59:43 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/05 11:26:17 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	main(int argc, char **argv)
 		if (data.start_time == -1)
 			argument_error(8);
 		create_threads(&data);
-	//	thread_monitor(&data);
 		join_thread(&data);
 	}
 	else

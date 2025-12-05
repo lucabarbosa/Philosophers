@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:25:45 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/03 21:15:03 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/05 12:44:43 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*routine(void *arg)
 
 	data = (t_philo *)arg;
 	if (data->id_philo % 2 == 0)
-		ft_sleep(data->rules->time_to_eat / 2);
+		ft_wait(data->rules->time_to_eat / 2);
 	while (!data->rules->someone_died)
 	{
 		pthread_mutex_lock(&data->rules->death_lock);
@@ -57,7 +57,7 @@ static void	ft_eating(t_philo *data)
 	data->last_meal_time = get_time();
 	data->meals_eaten++;
 	pthread_mutex_unlock(&data->rules->death_lock);
-	ft_sleep(data->rules->time_to_eat);
+	ft_wait(data->rules->time_to_eat);
 	pthread_mutex_unlock(data->left_fork);
 	pthread_mutex_unlock(data->right_fork);
 }
@@ -65,7 +65,7 @@ static void	ft_eating(t_philo *data)
 static void	ft_sleeping(t_philo *data)
 {
 	print_status(data, "\033[1;34m is sleeping 😴\033[0m");
-	ft_sleep(data->rules->time_to_sleep);
+	ft_wait(data->rules->time_to_sleep);
 }
 
 static void	ft_thinking(t_philo *data)

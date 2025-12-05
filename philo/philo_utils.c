@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:19:48 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/03 20:33:43 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/05 12:42:53 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ long	get_time(void);
 int		is_num(char *str);
 void	argument_error(int each);
 int		ft_atoi(const char *nptr);
-void	ft_sleep(long milliseconds);
+void	ft_wait(long milliseconds);
 
 long	get_time(void)
 {
@@ -29,7 +29,7 @@ long	get_time(void)
 	return (time);
 }
 
-void	ft_sleep(long milliseconds)
+void	ft_wait(long milliseconds)
 {
 	long	starting_time;
 

@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:47:41 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/03 21:17:08 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/05 12:43:16 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,6 @@ void	*only_one(void *arg);
 void	destroy_mutex(t_rules *data, int flag);
 void	create_threads(t_rules *data);
 void	print_status(t_philo *data, char *message);
-
-void	*only_one(void *arg)
-{
-	t_philo	*data;
-
-	data = (t_philo *)arg;
-	pthread_mutex_lock(data->left_fork);
-	print_status(data, "\033[1;37m has taken a fork 🍴\033[0m");
-	ft_sleep(data->rules->time_to_eat);
-	print_status(data, "\033[1;33m died 💀\033[0m");
-	return (NULL);
-}
 
 void	create_threads(t_rules *data)
 {
@@ -49,11 +37,21 @@ void	create_threads(t_rules *data)
 			destroy_mutex(data, 1);
 		i++;
 	}
-	// n = pthread_create(&data->monitor, NULL, &thread_monitor, &data);
-	// if (n != 0)
-	// {
-	// 	destroy_mutex(data, 1);
-	// }
+	n = pthread_create(&data->monitor, NULL, &thread_monitor, &data);
+	if (n != 0)
+		destroy_mutex(data, 1);
+}
+
+void	*only_one(void *arg)
+{
+	t_philo	*data;
+
+	data = (t_philo *)arg;
+	pthread_mutex_lock(data->left_fork);
+	print_status(data, "\033[1;37m has taken a fork 🍴\033[0m");
+	ft_wait(data->rules->time_to_eat);
+	print_status(data, "\033[1;33m died 💀\033[0m");
+	return (NULL);
 }
 
 void	destroy_mutex(t_rules *data, int flag)

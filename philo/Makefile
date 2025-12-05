@@ -3,7 +3,7 @@ NAME	=	philo
 CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror
 OBJ		=	$(patsubst %.c, obj/%.o, $(SRC))
-SRC		=	main.c philo_utils.c routine.c threads.c
+SRC		=	main.c philo_utils.c routine.c threads.c monitor.c
 
 all:		obj $(NAME)
 
