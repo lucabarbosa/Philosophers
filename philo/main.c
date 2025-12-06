@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/05 18:13:13 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/05 20:44:41 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,10 @@ int	main(int argc, char **argv)
 		init_struct(&data, argv, argc);
 		init_mutexes(&data);
 		init_philos(&data);
-		data.start_time = get_time();
-		if (data.start_time == -1)
-			argument_error(8);
 		create_threads(&data);
 		join_thread(&data);
 		destroy_mutex(&data, 0);
+		return (0);
 	}
 	else
 		argument_error(0);
@@ -94,6 +92,9 @@ static void	init_philos(t_rules *limit)
 	int	i;
 
 	i = 0;
+	limit->start_time = get_time();
+	if (limit->start_time == -1)
+		argument_error(8);
 	while (i < limit->n_philos)
 	{
 		limit->philo[i].id_philo = i + 1;

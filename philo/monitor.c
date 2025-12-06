@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 19:09:22 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/05 19:41:46 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/05 21:00:05 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	*thread_monitor(void *arg)
 		if (data->n_philo_eat > 0)
 			if (check_meals(data))
 				return (NULL);
-		ft_wait(1);
+		usleep(1000);
 	}
 	return (NULL);
 }

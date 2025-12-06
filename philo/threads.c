@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:47:41 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/05 15:31:32 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/05 20:58:13 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	*only_one(void *arg)
 	data = (t_philo *)arg;
 	pthread_mutex_lock(data->left_fork);
 	print_status(data, "\033[1;37m has taken a fork 🍴\033[0m");
-	ft_wait(data->rules->time_to_die);
+	ft_wait(data->rules->time_to_die, data);
 	pthread_mutex_unlock(data->left_fork);
 	print_status(data, "\033[1;33m died 💀\033[0m");
 	return (NULL);
