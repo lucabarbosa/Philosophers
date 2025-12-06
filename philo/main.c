@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/05 20:44:41 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/06 12:17:10 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	main(int argc, char **argv)
 		init_mutexes(&data);
 		init_philos(&data);
 		create_threads(&data);
+		monitor_routine(&data);
 		join_thread(&data);
 		destroy_mutex(&data, 0);
 		return (0);
@@ -59,6 +60,7 @@ static void	init_struct(t_rules *limits, char **argv, int argc)
 		argument_error(5);
 	limits->someone_died = 0;
 	limits->n_philo_eat = 0;
+	limits->ready = 0;
 	if (argc == 5)
 		return ;
 	limits->n_philo_eat = ft_atoi(argv[5]);
@@ -117,7 +119,6 @@ static void	join_thread(t_rules *data)
 		pthread_join(data->philo[0].thread, NULL);
 		return ;
 	}
-	pthread_join(data->monitor, NULL);
 	while (i < data->n_philos)
 	{
 		pthread_join(data->philo[i].thread, NULL);

@@ -6,27 +6,28 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:47:41 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/05 20:58:13 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/06 13:30:15 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 void	*only_one(void *arg);
-void	destroy_mutex(t_rules *data, int flag);
 void	create_threads(t_rules *data);
+void	destroy_mutex(t_rules *data, int flag);
 void	print_status(t_philo *data, char *message);
 
 void	create_threads(t_rules *data)
 {
-	int			i;
-	int			n;
+	int	i;
+	int	n;
 
 	i = 0;
 	if (data->n_philos == 1)
 	{
 		pthread_create(&data->philo[i].thread,
-			NULL, &only_one, &data->philo[i]);
+			NULL, &only_one, &data->philo[0]);
+		data->ready = 1;
 		return ;
 	}
 	while (i < data->n_philos)
@@ -37,9 +38,7 @@ void	create_threads(t_rules *data)
 			destroy_mutex(data, 1);
 		i++;
 	}
-	n = pthread_create(&data->monitor, NULL, &thread_monitor, &data);
-	if (n != 0)
-		destroy_mutex(data, 1);
+	data->ready = 1;
 }
 
 void	*only_one(void *arg)
