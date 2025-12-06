@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/06 13:51:32 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/06 20:09:57 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,24 @@ static void	ft_sleeping(t_philo *data);
 static void	ft_thinking(t_philo *data);
 static void	ft_take_a_fork(t_philo *data);
 
-int	check_end_routine(t_philo *data)
-{
-	int	flag;
-
-	pthread_mutex_lock(&data->rules->death_lock);
-	flag = data->rules->someone_died;
-	pthread_mutex_unlock(&data->rules->death_lock);
-	return (flag);
-}
-
 void	*routine(void *arg)
 {
 	t_philo	*data;
 
 	data = (t_philo *)arg;
-	while (!data->rules->ready)
-		continue;
+	while (1)
+	{
+		pthread_mutex_lock(&data->rules->death_lock);
+		if (data->rules->ready)
+		{
+			pthread_mutex_unlock(&data->rules->death_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&data->rules->death_lock);
+		usleep(100);
+	}
 	if (data->id_philo % 2 == 0)
-		ft_wait(data->rules->time_to_eat * 0.9 + 1, data);
+		ft_wait(data->rules->time_to_eat * 0.75 + 1, data);
 	while (!check_end_routine(data))
 	{
 		ft_take_a_fork(data);
@@ -48,10 +47,20 @@ void	*routine(void *arg)
 
 static void	ft_take_a_fork(t_philo *data)
 {
-	pthread_mutex_lock(data->left_fork);
-	print_status(data, "\033[1;37m has taken a fork 🍴\033[0m");
-	pthread_mutex_lock(data->right_fork);
-	print_status(data, "\033[1;37m has taken a fork 🍴\033[0m");
+	pthread_mutex_t	*first;
+	pthread_mutex_t	*second;
+
+	first = data->left_fork;
+	second = data->right_fork;
+	if (data->id_philo % 2 == 0)
+	{
+		first = data->right_fork;
+		second = data->left_fork;
+	}
+	pthread_mutex_lock(first);
+	print_status(data, "\033[1;37m has taken a fork \033[0m");
+	pthread_mutex_lock(second);
+	print_status(data, "\033[1;37m has taken a fork \033[0m");
 }
 
 static void	ft_eating(t_philo *data)

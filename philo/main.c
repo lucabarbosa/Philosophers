@@ -6,16 +6,16 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/06 12:17:10 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/06 20:08:03 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	init_philos(t_rules *data);
-static void	join_thread(t_rules *data);
-static void	init_mutexes(t_rules *data);
-static void	init_struct(t_rules *data, char **argv, int argc);
+static void	init_philos(t_rules *limits);
+static void	init_mutexes(t_rules *limits);
+static int	n_philo_eat(t_rules *limits, char *argv);
+static int	init_struct(t_rules *limits, char **argv, int argc);
 
 int	main(int argc, char **argv)
 {
@@ -25,7 +25,11 @@ int	main(int argc, char **argv)
 		return (0);
 	if (argc == 5 || argc == 6)
 	{
-		init_struct(&data, argv, argc);
+		if (init_struct(&data, argv, argc))
+			return (1);
+		if (argc == 6)
+			if (n_philo_eat(&data, argv[5]))
+				return (1);
 		init_mutexes(&data);
 		init_philos(&data);
 		create_threads(&data);
@@ -38,34 +42,42 @@ int	main(int argc, char **argv)
 		argument_error(0);
 }
 
-static void	init_struct(t_rules *limits, char **argv, int argc)
+static int	n_philo_eat(t_rules *limits, char *argv)
+{
+	limits->n_philo_eat = ft_atoi(argv);
+	if (limits->n_philo_eat < 1)
+		if (argument_error(6))
+			return (1);
+	return (0);
+}
+
+static int	init_struct(t_rules *limits, char **argv, int argc)
 {
 	int	i;
 
 	i = 0;
 	while (i++ < argc - 1)
 		if (is_num(argv[i]) == 0)
-			argument_error(1);
+			if (argument_error(1))
+				return (1);
 	limits->n_philos = ft_atoi(argv[1]);
 	if (limits->n_philos > 200 || limits->n_philos < 1)
-		argument_error(2);
+		if (argument_error(2))
+			return (1);
 	limits->time_to_die = ft_atoi(argv[2]);
 	if (limits->time_to_die < 1)
-		argument_error(3);
+		if (argument_error(3))
+			return (1);
 	limits->time_to_eat = ft_atoi(argv[3]);
 	if (limits->time_to_eat < 1)
-		argument_error(4);
+		if (argument_error(4))
+			return (1);
 	limits->time_to_sleep = ft_atoi(argv[4]);
 	if (limits->time_to_sleep < 1)
-		argument_error(5);
+		if (argument_error(5))
+			return (1);
 	limits->someone_died = 0;
-	limits->n_philo_eat = 0;
-	limits->ready = 0;
-	if (argc == 5)
-		return ;
-	limits->n_philo_eat = ft_atoi(argv[5]);
-	if (limits->n_philo_eat < 1)
-		argument_error(6);
+	return (0);
 }
 
 static void	init_mutexes(t_rules *limits)
@@ -107,21 +119,5 @@ static void	init_philos(t_rules *limit)
 		limit->philo[i].rules = limit;
 		i++;
 	}
-}
-
-static void	join_thread(t_rules *data)
-{
-	int	i;
-
-	i = 0;
-	if (data->n_philos == 1)
-	{
-		pthread_join(data->philo[0].thread, NULL);
-		return ;
-	}
-	while (i < data->n_philos)
-	{
-		pthread_join(data->philo[i].thread, NULL);
-		i++;
-	}
+	limit->ready = 0;
 }

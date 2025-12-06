@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:19:48 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/05 20:57:20 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/06 17:56:42 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 long	get_time(void);
 int		is_num(char *str);
-void	argument_error(int each);
+int		argument_error(int each);
 int		ft_atoi(const char *nptr);
 void	ft_wait(long milliseconds, t_philo *data);
 
@@ -42,7 +42,7 @@ void	ft_wait(long milliseconds, t_philo *data)
 	}
 }
 
-void	argument_error(int each)
+int	argument_error(int each)
 {
 	if (each == 0)
 		printf("Error: Wrong number of arguments.\n");
@@ -64,7 +64,7 @@ void	argument_error(int each)
 		printf("Error: gettimeofday() can't take the time of the system.\n");
 	else if (each == 9)
 		printf("Error: pthread_create can't creat a thread.\n");
-	exit (1);
+	return (1);
 }
 
 int	is_num(char *str)
