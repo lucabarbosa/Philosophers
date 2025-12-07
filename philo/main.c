@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/06 20:08:03 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/07 15:10:39 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ static void	init_mutexes(t_rules *limits)
 	while (i < limits->n_philos)
 	{
 		return_mut = pthread_mutex_init(&limits->forks[i], NULL);
+		if (return_mut)
+			argument_error(7);
+		return_mut = pthread_mutex_init(&limits->philo[i].meal_lock, NULL);
 		if (return_mut)
 			argument_error(7);
 		i++;

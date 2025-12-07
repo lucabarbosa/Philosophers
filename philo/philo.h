@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 13:06:52 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/06 20:07:50 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/07 14:40:32 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_philo
 
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	meal_lock;
 }	t_philo;
 
 typedef struct s_rules

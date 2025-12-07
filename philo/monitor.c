@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/06 19:45:22 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/07 16:13:32 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,22 @@ static int	check_death(t_philo *philo)
 	long	real_time;
 	long	time_since_last_meal;
 
-	pthread_mutex_lock(&philo->rules->death_lock);
+	pthread_mutex_lock(&philo->meal_lock);
 	real_time = get_time();
 	time_since_last_meal = real_time - philo->last_meal_time;
+	pthread_mutex_unlock(&philo->meal_lock);
 	if (time_since_last_meal >= philo->rules->time_to_die)
 	{
+		pthread_mutex_lock(&philo->rules->death_lock);
 		philo->rules->someone_died = 1;
+		real_time = get_time();
 		pthread_mutex_unlock(&philo->rules->death_lock);
 		pthread_mutex_lock(&philo->rules->write_lock);
-		printf("%ld %i \033[1;33m died 💀\n\033[0m",
-			get_time() - philo->rules->start_time, philo->id_philo);
+		printf("%ld %i \033[1;33m died 💀\033[0m",
+			real_time - philo->rules->start_time, philo->id_philo);
 		pthread_mutex_unlock(&philo->rules->write_lock);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->rules->death_lock);
 	return (0);
 }
 
@@ -70,10 +72,10 @@ static int	check_meals(t_rules *data)
 	all_eaten = 0;
 	while (i < data->n_philos)
 	{
-		pthread_mutex_lock(&data->death_lock);
+		pthread_mutex_lock(&data->philo[i].meal_lock);
 		if (data->philo[i].meals_eaten >= data->n_philo_eat)
 			all_eaten++;
-		pthread_mutex_unlock(&data->death_lock);
+		pthread_mutex_unlock(&data->philo[i].meal_lock);
 		i++;
 	}
 	if (all_eaten == data->n_philos)

@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 15:47:41 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/06 20:07:38 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/07 14:15:50 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ void	create_threads(t_rules *data)
 		}
 		i++;
 	}
-	pthread_mutex_lock(&data->death_lock);
 	data->ready = 1;
-	pthread_mutex_unlock(&data->death_lock);
 }
 
 void	*only_one(void *arg)
