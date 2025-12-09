@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 14:17:49 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/07 15:10:39 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/08 18:07:30 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	init_struct(t_rules *limits, char **argv, int argc)
 	if (limits->time_to_sleep < 1)
 		if (argument_error(5))
 			return (1);
-	limits->someone_died = 0;
+	limits->n_philo_eat = 0;
 	return (0);
 }
 
@@ -122,5 +122,6 @@ static void	init_philos(t_rules *limit)
 		limit->philo[i].rules = limit;
 		i++;
 	}
+	limit->someone_died = 0;
 	limit->ready = 0;
 }

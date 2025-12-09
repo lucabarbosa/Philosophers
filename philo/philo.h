@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 13:06:52 by lbento            #+#    #+#             */
-/*   Updated: 2025/12/07 14:40:32 by lbento           ###   ########.fr       */
+/*   Updated: 2025/12/08 18:05:10 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_rules
 	pthread_mutex_t	forks[MAX_PHILOS];
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	death_lock;
-	pthread_t		monitor;
 
 	t_philo			philo[MAX_PHILOS];
 }	t_rules;
