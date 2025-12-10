@@ -175,7 +175,7 @@ You can check the how many meals they eat using:
 #Expected: All 200 philosophers should function properly
 ```
 
-## 🧪 Checking leak and data races
+## 🚨 Checking leak and data races
 
 ```bash
 #Single philosopher (leak case)
